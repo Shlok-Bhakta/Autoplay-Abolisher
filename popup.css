@@ -1,0 +1,19 @@
+body {
+    width: 250px;
+    height: 400px;
+}
+
+.global-button-on {
+    width: 150px;
+    height: 150px;
+    background-color: #00000000;
+    border: none;
+    background: url("https://api.iconify.design/material-symbols:power-settings-new-rounded.svg?color=%2333d17a") no-repeat center center / cover;
+}
+.global-button-off {
+width: 150px;
+    height: 150px;
+    background-color: #00000000;
+    border: none;
+    background: url("https://api.iconify.design/material-symbols:power-settings-new-rounded.svg?color=%23e01b24") no-repeat center center / cover;
+}
