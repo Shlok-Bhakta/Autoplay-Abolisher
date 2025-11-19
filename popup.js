@@ -1,5 +1,6 @@
 const globalButton = document.getElementById("global-button");
 const hbomaxToggle = document.getElementById("hbomax-toggle");
+const hbomaxFavicon = document.getElementById("hbomax-favicon");
 
 async function loadSettings() {
     const result = await chrome.storage.local.get(['global_enabled', 'hbomax_autoplay']);
@@ -13,6 +14,12 @@ async function loadSettings() {
     }
     
     hbomaxToggle.checked = result.hbomax_autoplay !== false;
+    
+    const tabs = await chrome.tabs.query({});
+    const hbomaxTab = tabs.find(tab => tab.url && tab.url.includes('hbomax.com'));
+    if (hbomaxTab && hbomaxTab.favIconUrl) {
+        hbomaxFavicon.src = hbomaxTab.favIconUrl;
+    }
 }
 
 function updateGlobalButton() {
