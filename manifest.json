@@ -16,6 +16,8 @@
     },
     "permissions": ["storage", "activeTab", "scripting"],
     "host_permissions": [
-        "*://*.hbomax.com/*"
+        "*://*.hbomax.com/*",
+        "*://*.primevideo.com/*",
+        "*://www.amazon.com/gp/video/*"
     ]
 }
