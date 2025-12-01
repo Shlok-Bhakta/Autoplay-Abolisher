@@ -40,30 +40,26 @@ async function loadSettings() {
     if (hbomaxTab) {
         hbomaxItem.style.display = 'flex';
         hasAnyTab = true;
-        if (hbomaxTab.favIconUrl) {
-            hbomaxFavicon.src = hbomaxTab.favIconUrl;
-        }
+        hbomaxFavicon.src = hbomaxTab.favIconUrl || 'https://www.max.com/favicon.ico';
+        hbomaxFavicon.onerror = () => { hbomaxFavicon.src = 'https://www.max.com/favicon.ico'; };
     }
     if (huluTab) {
         huluItem.style.display = 'flex';
         hasAnyTab = true;
-        if (huluTab.favIconUrl) {
-            huluFavicon.src = huluTab.favIconUrl;
-        }
+        huluFavicon.src = huluTab.favIconUrl || 'https://www.hulu.com/favicon.ico';
+        huluFavicon.onerror = () => { huluFavicon.src = 'https://www.hulu.com/favicon.ico'; };
     }
     if (primevideoTab) {
         primevideoItem.style.display = 'flex';
         hasAnyTab = true;
-        if (primevideoTab.favIconUrl) {
-            primevideoFavicon.src = primevideoTab.favIconUrl;
-        }
+        primevideoFavicon.src = primevideoTab.favIconUrl || 'https://www.primevideo.com/favicon.ico';
+        primevideoFavicon.onerror = () => { primevideoFavicon.src = 'https://www.primevideo.com/favicon.ico'; };
     }
     if (youtubeTab) {
         youtubeItem.style.display = 'flex';
         hasAnyTab = true;
-        if (youtubeTab.favIconUrl) {
-            youtubeFavicon.src = youtubeTab.favIconUrl;
-        }
+        youtubeFavicon.src = youtubeTab.favIconUrl || 'https://www.youtube.com/favicon.ico';
+        youtubeFavicon.onerror = () => { youtubeFavicon.src = 'https://www.youtube.com/favicon.ico'; };
     }
     
     noTabsMessage.style.display = hasAnyTab ? 'none' : 'block';
