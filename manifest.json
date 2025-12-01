@@ -16,6 +16,20 @@
     },
     "permissions": ["storage", "activeTab", "scripting"],
     "host_permissions": [
-        "*://*.hbomax.com/*"
+        "*://*.hbomax.com/*",
+        "*://*.hulu.com/*",
+        "*://*.youtube.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["*://*.hulu.com/*"],
+            "js": ["hulu.js"],
+            "run_at": "document_start"
+        },
+        {
+            "matches": ["*://*.youtube.com/*"],
+            "js": ["youtube.js"],
+            "run_at": "document_start"
+        }
     ]
 }
