@@ -18,6 +18,25 @@
     "host_permissions": [
         "*://*.hbomax.com/*",
         "*://*.primevideo.com/*",
-        "*://www.amazon.com/gp/video/*"
+        "*://www.amazon.com/gp/video/*",
+        "*://*.hulu.com/*",
+        "*://*.youtube.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["*://*.primevideo.com/*", "*://www.amazon.com/gp/video/*"],
+            "js": ["primevideo.js"],
+            "run_at": "document_start"
+        },
+        {
+            "matches": ["*://*.hulu.com/*"],
+            "js": ["hulu.js"],
+            "run_at": "document_start"
+        },
+        {
+            "matches": ["*://*.youtube.com/*"],
+            "js": ["youtube.js"],
+            "run_at": "document_start"
+        }
     ]
 }
