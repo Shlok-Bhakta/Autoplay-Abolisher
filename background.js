@@ -26,5 +26,17 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
                 });
             });
         }
+        if (changes.primevideo_autoplay) {
+            chrome.tabs.query(
+                { url: ['*://*.primevideo.com/*', '*://www.amazon.com/gp/video/*'] },
+                (tabs) => {
+                    tabs.forEach((tab) => {
+                        chrome.tabs.sendMessage(tab.id, {
+                            action: 'checkAutoplayStatus'
+                        }).catch(() => {});
+                    });
+                }
+            );
+        }
     }
 });
