@@ -53,7 +53,9 @@ function clickIfNeeded(el, desiredState) {
     // Click only if needed
     await new Promise(r => setTimeout(r, 300));
     clickIfNeeded(previews, desiredState);
+    await new Promise(r => setTimeout(r, 300));
     clickIfNeeded(episodes, desiredState);
+    await new Promise(r => setTimeout(r, 300));
     clickIfNeeded(recs, desiredState);
 
     // Notify popup that we're done so it can close the tab
