@@ -1,20 +1,50 @@
-if (window.primeVideoAutoplayDisabled) {
-    // Stop the interval
-    clearInterval(window.primeVideoInterval);
-    window.primeVideoAutoplayDisabled = false;
-    console.log("Prime Video autoplay disabler STOPPED");
-} else {
-    // Start the interval
-    function disableAutoplay() {
-        const hideBtn = document.querySelector(".atvwebplayersdk-nextupcardhide-button");
-        
-        if (hideBtn) {
-            hideBtn.click();
-            console.log("Clicked 'Hide' button to stop autoplay");
-        }
+console.log("[Prime Video] Script loaded");
+
+// Track running interval
+let primeInterval = null;
+
+// Click function
+function clickHideButton() {
+    const hideBtn = document.querySelector(".atvwebplayersdk-nextupcardhide-button");
+    if (hideBtn) {
+        hideBtn.click();
+        console.log("[Prime Video] Clicked hide button!");
     }
-    
-    window.primeVideoInterval = setInterval(disableAutoplay, 1000);
-    window.primeVideoAutoplayDisabled = true;
-    console.log("Prime Video autoplay disabler STARTED");
 }
+
+// Start blocker
+function startBlocker() {
+    if (primeInterval) return; // already running
+    console.log("[Prime Video] Starting blocker...");
+    primeInterval = setInterval(clickHideButton, 2000);
+}
+
+// Stop blocker
+function stopBlocker() {
+    if (primeInterval) {
+        clearInterval(primeInterval);
+        primeInterval = null;
+        console.log("[Prime Video] Blocker stopped.");
+    }
+}
+
+// Check setting and start/stop as needed
+async function checkAutoplayStatus() {
+    const { primevideo_autoplay } = await chrome.storage.local.get("primevideo_autoplay");
+
+    if (primevideo_autoplay) {
+        startBlocker();
+    } else {
+        stopBlocker();
+    }
+}
+
+// Listen for messages from background.js
+chrome.runtime.onMessage.addListener((msg) => {
+    if (msg.action === "checkAutoplayStatus") {
+        checkAutoplayStatus();
+    }
+});
+
+// Run once on page load
+setTimeout(checkAutoplayStatus, 1000);
