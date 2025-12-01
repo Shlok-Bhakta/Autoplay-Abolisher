@@ -7,24 +7,21 @@ const youtubeToggle = document.getElementById("youtube-toggle");
 const youtubeFavicon = document.getElementById("youtube-favicon");
 
 async function loadSettings() {
-    const result = await chrome.storage.local.get(['global_enabled', 'hbomax_autoplay', 'hulu_autoplay', 'youtube_autoplay']);
+    const result = await chrome.storage.local.get([
+        'global_enabled',
+        'hbomax_autoplay',
+        'hulu_autoplay',
+        'youtube_autoplay'
+    ]);
     
-    if (result.global_enabled === false) {
-        globalButton.classList.remove('global-button-on');
-        globalButton.classList.add('global-button-off');
-    } else {
-        globalButton.classList.remove('global-button-off');
-        globalButton.classList.add('global-button-on');
-    }
-    
-    hbomaxToggle.checked = result.hbomax_autoplay !== false;
-    huluToggle.checked = result.hulu_autoplay !== false;
-    youtubeToggle.checked = result.youtube_autoplay !== false;
-    
-    const tabs = await chrome.tabs.query({});
-    const hbomaxTab = tabs.find(tab => tab.url && tab.url.includes('hbomax.com'));
-    const huluTab = tabs.find(tab => tab.url && tab.url.includes('hulu.com'));
-    const youtubeTab = tabs.find(tab => tab.url && tab.url.includes('youtube.com'));
+    // Global button visual state
+    globalButton.classList.toggle('global-button-on', result.global_enabled === true);
+    globalButton.classList.toggle('global-button-off', result.global_enabled === false);
+
+    // 🔥 Correct state loading
+    hbomaxToggle.checked = result.hbomax_autoplay === true;
+    huluToggle.checked   = result.hulu_autoplay   === true;
+    youtubeToggle.checked = result.youtube_autoplay === true;
     
     if (hbomaxTab && hbomaxTab.favIconUrl) {
         hbomaxFavicon.src = hbomaxTab.favIconUrl;
@@ -71,13 +68,48 @@ globalButton.addEventListener('click', async () => {
 
 hbomaxToggle.addEventListener('change', async () => {
     const isEnabled = hbomaxToggle.checked;
+
     await chrome.storage.local.set({ hbomax_autoplay: isEnabled });
+
+    const any = huluToggle.checked || youtubeToggle.checked || hbomaxToggle.checked;
+    await chrome.storage.local.set({ global_enabled: any });
+
     updateGlobalButton();
-    
-    if (isEnabled || hbomaxToggle.checked) {
-        await chrome.storage.local.set({ global_enabled: true });
-    }
+
+    chrome.tabs.create({
+        url: "https://play.hbomax.com/settings/playback",
+        active: false
+    }, (tab) => {
+
+        const hbomaxTabId = tab.id;
+
+        function tabListener(tabId, info) {
+            if (tabId === hbomaxTabId && info.status === "complete") {
+                chrome.tabs.onUpdated.removeListener(tabListener);
+
+                chrome.scripting.executeScript({
+                    target: { tabId: hbomaxTabId },
+                    files: ["hbomax.js"]
+                });
+            }
+        }
+
+        chrome.tabs.onUpdated.addListener(tabListener);
+        chrome.runtime.onMessage.removeListener(closeListener);
+
+        function closeListener(msg) {
+            if (msg.action === "hbomax_done") {
+                chrome.tabs.remove(hbomaxTabId);
+                chrome.runtime.onMessage.removeListener(closeListener);
+            }
+        }
+
+        chrome.runtime.onMessage.addListener(closeListener);
+    });
 });
+
+
+
 
 huluToggle.addEventListener('change', async () => {
     const isEnabled = huluToggle.checked;
