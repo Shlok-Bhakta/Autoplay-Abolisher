@@ -18,29 +18,68 @@ body {
 .global-button-on {
     width: 150px;
     height: 150px;
-    background-color: #00000000;
+    background-color: rgba(51, 209, 122, 0.1);
     border: none;
+    border-radius: 50%;
     display: block;
     margin: 0 auto 20px;
-    background: url("https://api.iconify.design/material-symbols:power-settings-new-rounded.svg?color=%2333d17a") no-repeat center center / cover;
+    background-image: url("https://api.iconify.design/material-symbols:power-settings-new-rounded.svg?color=%2333d17a");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 80%;
+    box-shadow: 0 0 30px 10px rgba(51, 209, 122, 0.3);
     cursor: pointer;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.global-button-on:hover {
+    background-color: rgba(51, 209, 122, 0.15);
+    box-shadow: 0 0 40px 15px rgba(51, 209, 122, 0.4);
+}
+
+.global-button-on:focus {
+    outline: 2px solid #33d17a;
+    outline-offset: 4px;
 }
 
 .global-button-off {
     width: 150px;
     height: 150px;
-    background-color: #00000000;
+    background-color: rgba(224, 27, 36, 0.1);
     border: none;
+    border-radius: 50%;
     display: block;
     margin: 0 auto 20px;
-    background: url("https://api.iconify.design/material-symbols:power-settings-new-rounded.svg?color=%23e01b24") no-repeat center center / cover;
+    background-image: url("https://api.iconify.design/material-symbols:power-settings-new-rounded.svg?color=%23e01b24");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 80%;
+    box-shadow: 0 0 30px 10px rgba(224, 27, 36, 0.3);
     cursor: pointer;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.global-button-off:hover {
+    background-color: rgba(224, 27, 36, 0.15);
+    box-shadow: 0 0 40px 15px rgba(224, 27, 36, 0.4);
+}
+
+.global-button-off:focus {
+    outline: 2px solid #e01b24;
+    outline-offset: 4px;
 }
 
 .website-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
+}
+
+.no-tabs-message {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    padding: 12px;
 }
 
 .website-item {
